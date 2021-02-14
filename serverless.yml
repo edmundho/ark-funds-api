@@ -1,0 +1,7 @@
+org: ginger
+app: arkansas
+component: express
+name: funds
+
+inputs:
+  src: ./

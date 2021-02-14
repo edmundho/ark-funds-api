@@ -1,6 +1,9 @@
-const express = require('express')
-const app = express()
-const port = 3000
+'use strict';
+
+// eslint-disable-next-line import/no-unresolved
+const express = require('express');
+
+const app = express();
 
 const parser = require('csv-parser')
 const request = require('request');
@@ -33,6 +36,11 @@ funds.forEach(fund => {
   })
 })
 
-app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`)
-})
+
+// Error handler
+app.use((err, req, res) => {
+  console.error(err);
+  res.status(500).send('Internal Serverless Error');
+});
+
+module.exports = app;
