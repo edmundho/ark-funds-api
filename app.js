@@ -5,7 +5,7 @@ const express = require('express');
 
 const app = express();
 
-const parser = require('csv-parser')
+const parser = require('csv-parser');
 const request = require('request');
 
 const funds = [
@@ -24,8 +24,10 @@ function sendJsonPayloadFromCsvStream(stream, res) {
   const output = [];
 
   stream.pipe(parser())
-  .on('data', row => output.push(row))
-  .on('end', () => res.send(output))
+  .on('data', row => {
+    if (row.ticker) output.push(row);
+  })
+  .on('end', () => res.send(output));
 }
 
 funds.forEach(fund => {
@@ -33,8 +35,8 @@ funds.forEach(fund => {
     const stream = createCsvStream(fund.url);
 
     sendJsonPayloadFromCsvStream(stream, res);
-  })
-})
+  });
+});
 
 
 // Error handler
